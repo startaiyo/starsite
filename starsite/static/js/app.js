@@ -32,3 +32,6 @@ self.addEventListener("notificationclick", (event) => {
     );
   });
   
+function addTodoWithPushNotification() {
+  registerTodo("It's time to eat your pills!", new Date().getTime() + 5000, "Doctor's hint");
+}
