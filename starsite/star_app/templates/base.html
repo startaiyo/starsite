@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/stylesheet.css' %}" rel="stylesheet">
+    <title>{% block title %}starapp{% endblock %}</title>
+</head>
+<body>
+  <header>
+		<h1>bohl</h1>
+		  <p><a href="{% url 'alert'%}">通知設定</a></p>
+			<p><a href="">体重</a></p>
+			<p><a href="">昼どころ</a></p>
+			<p><a href="">やること記録</a></p>
+			<p><a href="">カロリー計算</a></p>
+  </header>
+	<div class="main">
+		  {% block content %}{% endblock %}	
+	</div>
+
+</body>
+<script type="text/javascript"　src="{% static 'js/app.js' %}"></script>
+</html>
