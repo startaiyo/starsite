@@ -1,0 +1,7 @@
+header h1,header p{
+    float:left;
+}
+header{
+    background-color: aqua;
+    height:90px;
+}

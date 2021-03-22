@@ -1,2 +1,2 @@
 web: gunicorn starsite.wsgi --log-file -
-clock: python scheduled.py
+clock: python clock.py
