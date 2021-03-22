@@ -1,8 +1,13 @@
-from apscheduler.schedulers.background import BackgroundScheduler
-from .scheduled_mail import scheduled_mail
+from apscheduler.schedulers.blocking import BlockingScheduler
 
+sched = BlockingScheduler()
 
-def start():
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(scheduled_mail, 'interval', seconds=30)
-    scheduler.start()
+@sched.scheduled_job('cron', day_of_week='mon-fri', hour=17)
+def scheduled_job():
+    subject = 'Djangoアプリから通知'
+    massege = 'おはようございます。本日はhogehogeの予定があります。'
+    from_mail = settings.DEFAULT_FROM_EMAIL
+    recipient = ["startaiyo0104@gmail.com"]
+    send_mail(subject, massege, from_mail, recipient)
+
+sched.start()
