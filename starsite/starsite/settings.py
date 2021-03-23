@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-from .security import *
 import dj_database_url
+import environ
 
+env = environ.Env()  
+HEROKU_ENV = env.bool('DJANGO_HEROKU_ENV', default=False)
+if not HEROKU_ENV:
+    env.read_env('.env')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -149,4 +153,10 @@ db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
 DATABASES['default'].update(db_from_env)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_FROM_EMAIL = 'bohlstarapp@gmail.com'
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_PORT=os.environ.get('EMAIL_PORT')
+EMAIL_USE_TLS=os.environ.get('EMAIL_USE_TLS')
 

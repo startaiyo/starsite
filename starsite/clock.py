@@ -5,7 +5,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'starsite.settings')
 sched = BlockingScheduler()
 
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour=17)
+@sched.scheduled_job('interval', minutes=0.5)
 def scheduled_job():
     subject = 'Djangoアプリから通知'
     massege = 'おはようございます。本日はhogehogeの予定があります。'
