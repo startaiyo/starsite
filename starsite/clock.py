@@ -1,5 +1,8 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
-
+from django.conf import settings
+from django.core.mail import send_mail 
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'starsite.settings')
 sched = BlockingScheduler()
 
 @sched.scheduled_job('cron', day_of_week='mon-fri', hour=17)
