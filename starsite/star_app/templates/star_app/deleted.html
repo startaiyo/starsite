@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}{{ block.super }} deleted{% endblock %}
+{% block content %}
+<h1>削除しました。</h1>
+<a href="{% url 'index' %}">トップに戻る</a>
+{% endblock %}
