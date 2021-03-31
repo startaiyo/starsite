@@ -38,13 +38,14 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'star_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'star_app'
+    
 ]
 
 MIDDLEWARE = [
@@ -160,3 +161,7 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_PORT=os.environ.get('EMAIL_PORT')
 EMAIL_USE_TLS=os.environ.get('EMAIL_USE_TLS')
 
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'top'
