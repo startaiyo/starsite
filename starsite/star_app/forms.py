@@ -3,4 +3,4 @@ from .models import Work
 class WorkModelForm(forms.ModelForm):
     class Meta:
         model=Work
-        fields='__all__'
+        exclude=['create_user']

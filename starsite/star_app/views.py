@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from . import forms
 from star_app.models import Work
 from django.contrib.auth.decorators import login_required
@@ -23,7 +23,13 @@ def register(request):
     if request.method=='POST':
         form=forms.WorkModelForm(request.POST)
         if form.is_valid():
-            form.save()
+            post=form.save(commit=False)
+            post.create_user=request.user
+            post.save()
+            return render(request,'star_app/index.html')
+    else:
+        form=forms.WorkModelForm()
+
     return render(request,'star_app/register.html',context={'form':form})
 
 def top(request):
