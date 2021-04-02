@@ -15,8 +15,10 @@ class UserCreateView(CreateView):
 def index(request):
     return render(request,'star_app/index.html')
 
+@login_required
 def alert(request):
-    return render(request,'star_app/alert.html')
+    work=Work.objects.filter(create_user=request.user).all()
+    return render(request,'star_app/alert.html',{'work':work})
 
 def register(request):
     form = forms.WorkModelForm()
@@ -26,7 +28,7 @@ def register(request):
             post=form.save(commit=False)
             post.create_user=request.user
             post.save()
-            return render(request,'star_app/index.html')
+            return redirect('index')
     else:
         form=forms.WorkModelForm()
 
