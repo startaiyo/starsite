@@ -2,4 +2,22 @@
 {% block title %}{{ block.super }} alert{% endblock %}
 {% block content %}
 <a href="{% url 'register' %}">登録する</a>
+<div class ="works">
+  <table>
+  <tr>
+  <th>content</th>
+  <th>date</th>
+  <th>interval</th>
+  <th>day</th>
+  </tr>
+  {% for item in work %}
+  <tr>
+  <td>{{ item.content}}</td>
+  <td>{{ item.date }}</td>
+  <td>{{ item.interval }}</td>
+  <td>{{ item.day }}</td>
+  </tr>
+  {% endfor %}
+  <table>
+</div>
 {% endblock %}
