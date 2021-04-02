@@ -3,8 +3,9 @@ from . import forms
 from star_app.models import Work
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView # 追記
-from django.contrib.auth.forms import UserCreationForm  # 追記
+from .forms import UserCreationForm  # 追記
 from django.urls import reverse_lazy
+from django.http import Http404
 # Create your views here.
 class UserCreateView(CreateView):
     form_class = UserCreationForm
@@ -18,7 +19,17 @@ def index(request):
 @login_required
 def alert(request):
     work=Work.objects.filter(create_user=request.user).all()
-    return render(request,'star_app/alert.html',{'work':work})
+    DAY=(
+        (7, '未選択'),
+        (6, '日'),
+        (0, '月'),
+        (1, '火'),
+        (2, '水'),
+        (3, '木'),
+        (4, '金'),
+        (5, '土')
+    )
+    return render(request,'star_app/alert.html',{'work':work, 'DAY':DAY})
 
 def register(request):
     form = forms.WorkModelForm()
@@ -36,6 +47,14 @@ def register(request):
 
 def top(request):
     return render(request,'star_app/top.html')
+
+def delete(request,id):
+    try:
+        work=Work.objects.get(id=id)
+    except Work.DoesNotExist:
+        raise Http404
+    work.delete()
+    return redirect('alert')
 
 def all_delete(request):
     work=Work.objects.all()

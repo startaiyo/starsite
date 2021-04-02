@@ -15,7 +15,8 @@
   <td>{{ item.content}}</td>
   <td>{{ item.date }}</td>
   <td>{{ item.interval }}</td>
-  <td>{{ item.day }}</td>
+  <td>{{ item.get_day_display }}</td>
+  <td><a href="{% url 'delete' item.id %}">削除</a></td>
   </tr>
   {% endfor %}
   <table>
