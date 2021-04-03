@@ -6,6 +6,11 @@ from django.views.generic import CreateView # 追記
 from .forms import UserCreationForm  # 追記
 from django.urls import reverse_lazy
 from django.http import Http404
+import datetime
+import calendar
+from star_app.models import Work 
+from django.contrib.auth.models import User
+
 # Create your views here.
 class UserCreateView(CreateView):
     form_class = UserCreationForm
@@ -14,7 +19,9 @@ class UserCreateView(CreateView):
 
 @login_required
 def index(request):
-    return render(request,'star_app/index.html')
+    work=Work.objects.filter(create_user=request.user).all()
+    
+    return render(request,'star_app/index.html',context={'work':work})
 
 @login_required
 def alert(request):
