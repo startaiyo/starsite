@@ -12,13 +12,25 @@
   </tr>
   {% for item in work %}
   <tr>
-  <td>{{ item.content}}</td>
-  <td>{{ item.date }}</td>
-  <td>{{ item.interval }}</td>
-  <td>{{ item.get_day_display }}</td>
-  <td><a href="{% url 'delete' item.id %}">削除</a></td>
-  </tr>
-  {% endfor %}
+  　<td>{{ item.content　}}</td>
+　　{% if item.date == 0 %}
+    <td>指定なし</td>
+    {% else %}
+    <td>毎月{{ item.date }}日</td>
+    {% endif %}
+    {% if item.interval == 0 %}
+    <td>指定なし</td>
+    {% else %}
+    <td>{{ item.interval }}日間隔</td>
+　　 {% endif %}
+    {% if item.day == 7 %}
+    <td>指定なし</td>
+    {% else %}
+    <td>{{ item.get_day_display }}</td>
+    {% endif %}
+    <td><a href="{% url 'delete' item.id %}">削除</a></td>
+    </tr>
+    {% endfor %}
   <table>
 </div>
 {% endblock %}
