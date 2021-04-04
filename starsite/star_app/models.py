@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth import get_user_model
 import datetime
+from datetime import timezone
 
 # Create your models here.
 class Work(models.Model):
@@ -22,3 +23,7 @@ class Work(models.Model):
     interval=models.IntegerField('○日間隔',validators=[MinValueValidator(0)],default=0)
     created_at=models.DateTimeField(auto_now_add=True)
     create_user=models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    def get_delta(self):
+        today = datetime.datetime.now(timezone.utc) 
+        dt=(today-self.created_at).days
+        return dt
