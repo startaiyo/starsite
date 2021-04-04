@@ -32,6 +32,11 @@ def index(request):
 @login_required
 def alert(request):
     work=Work.objects.filter(create_user=request.user).all()
+    if len(work)!=0:
+        work=work
+    else:
+        work=None
+    
     DAY=(
         (7, '未選択'),
         (6, '日'),
