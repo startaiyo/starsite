@@ -4,33 +4,46 @@
 <a href="{% url 'register' %}">登録する</a>
 <div class ="works">
   <table>
+  {% if work == None %}
+  <p>習慣はまだありません</p>
+  {% else %}
   <tr>
-  <th>content</th>
-  <th>date</th>
-  <th>interval</th>
-  <th>day</th>
+  <th>習慣内容</th>
+  <th>日にち</th>
+  <th>間隔</th>
+  <th>曜日</th>
   </tr>
+  {% endif %}
   {% for item in work %}
-  <tr>
-  　<td>{{ item.content　}}</td>
-　　{% if item.date == 0 %}
+    <tr>
+    <td>{{ item.content　}}</td>
+    {% if item.date == 0 %}
     <td>指定なし</td>
     {% else %}
     <td>毎月{{ item.date }}日</td>
     {% endif %}
+
     {% if item.interval == 0 %}
     <td>指定なし</td>
     {% else %}
     <td>{{ item.interval }}日間隔</td>
-　　 {% endif %}
+    {% endif %}
+
     {% if item.day == 7 %}
     <td>指定なし</td>
     {% else %}
     <td>{{ item.get_day_display }}</td>
     {% endif %}
+
     <td><a href="{% url 'delete' item.id %}">削除</a></td>
     </tr>
-    {% endfor %}
+   {% endfor %}
+ 
   <table>
 </div>
+
+{% if work != none%}
+<a href="{% url 'all_delete' %}">全削除</a>
+{% endif %}
+
 {% endblock %}
