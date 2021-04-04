@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from django.http import Http404
 import datetime
 import calendar
+from datetime import timezone
 from star_app.models import Work 
 from django.contrib.auth.models import User
 
@@ -20,10 +21,13 @@ class UserCreateView(CreateView):
 @login_required
 def index(request):
     work=Work.objects.filter(create_user=request.user).all()
-    today = datetime.datetime.now() 
+    today = datetime.datetime.now(timezone.utc) 
     cal = calendar.Calendar(firstweekday=0) 
     this_month_cal = cal.itermonthdays2(today.year,today.month)
-    return render(request,'star_app/index.html',context={'work':work, 'this_month_cal':this_month_cal})
+    this_month = today.month
+    this_year = today.year
+    this_day = today.day
+    return render(request,'star_app/index.html',context={'work':work,'this_day':this_day,'this_year':this_year,'this_month':this_month, 'this_month_cal':this_month_cal})
 
 @login_required
 def alert(request):

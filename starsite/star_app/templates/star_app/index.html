@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block title %}{{ block.super }} index{% endblock %}
 {% block content %}
+{% load tags %}
 <h1>ようこそ{{ user.username }}さん</h1>
+<h2>{{this_year}}年{{this_month}}月の予定表</h2>
 {% comment %} カレンダーの表示 {% endcomment %}
 <table>
 <tr>
@@ -19,13 +21,19 @@
 <td></td>
 {% elif item.0 != 0 %}
     {% if item.1 == 6 %}
-    <td>{{item.0}}日
+        {% if item.0 == this_day %}
+             <td style = "color:red;">{{item.0}}日
+        {% else %}
+             <td>{{item.0}}日
+        {% endif %}
     <p>本日の予定</p>
-    {{wk.get_delta}}
+ 
         {% for wk in work %}
-            {% if item.1 == wk.day %}
+            {% if item.0 == wk.day %}
             <p>{{wk.content}}</p>
             {% elif item.0 == wk.date %}
+            <p>{{wk.content}}</p>
+            {% elif item.0|delta:wk.get_delta|modulo:wk.interval %}
             <p>{{wk.content}}</p>
             {% endif %}
              
@@ -33,13 +41,19 @@
        
         </td></tr><tr>
     {% else %}
-    <td>
-    {{item.0}}日
+        {% if item.0 == this_day %}
+             <td style = "color:red;">{{item.0}}日
+        {% else %}
+             <td>{{item.0}}日
+        {% endif %}
     <p>本日の予定</p>
         {% for wk in work %}
             {% if item.1 == wk.day %}
             <p>{{wk.content}}</p>
             {% elif item.0 == wk.date %}
+            <p>{{wk.content}}</p>
+            {% comment %} 登録日からの経過日数がintervalの倍数の時 {% endcomment %}
+            {% elif item.0|delta:wk.get_delta|modulo:wk.interval %}
             <p>{{wk.content}}</p>
             {% endif %}
         {% endfor %}
