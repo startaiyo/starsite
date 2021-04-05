@@ -28,10 +28,13 @@ def scheduled_job():
                 if (datetime.date.today()-item.created_at.date()).days % item.interval==0:
                     contentlist.append(item.content)
         subject = 'bohlappから通知'
-        massege = 'おはようございます。本日は'+'・'.join(contentlist)+'予定があります。'
+        if len(contentlist)>0:
+            message = 'おはようございます。本日は'+'・'.join(contentlist)+'予定があります。'
+        else:
+            message = 'おはようございます。本日の予定はありません。'
         from_mail = settings.DEFAULT_FROM_EMAIL
         recipient = [human.email]
-        send_mail(subject, massege, from_mail, recipient)
+        send_mail(subject, message, from_mail, recipient)
 
 @sched.scheduled_job('interval', seconds=10)
 def timed_job():
@@ -47,8 +50,12 @@ def timed_job():
             elif item.interval !=0:
                 if (datetime.date.today()-item.created_at.date()).days % item.interval==0:
                     contentlist.append(item.content)
-        print (human.email)
-        print('おはようございます。本日は'+'・'.join(contentlist)+'予定があります。')
-    
+        print (human.email)rr
+        if len(contentlist)>0:
+            message = 'おはようございます。本日は'+'・'.join(contentlist)+'予定があります。'
+        else:
+            message = 'おはようございます。本日の予定はありません。'
+        print (contentlist)
+        print(message)
 
 sched.start()

@@ -18,7 +18,7 @@
 			<p><a href="">体重</a></p>
 			<p><a href="">昼どころ</a></p>
 			<p><a href="">カロリー計算</a></p>
-	{% if user.is_authenticated %}
+	{% if request.user.is_authenticated %}
     <p><a href="{% url 'logout' %}">ログアウト</a></p>
     {% endif %}
 	</div>
