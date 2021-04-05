@@ -12,6 +12,7 @@
 </head>
 <body>
   <header>
+     <div>
 		<h1>bohl</h1>
 		  <p><a href="{% url 'alert'%}">習慣登録</a></p>
 			<p><a href="">体重</a></p>
@@ -20,6 +21,7 @@
 	{% if user.is_authenticated %}
     <p><a href="{% url 'logout' %}">ログアウト</a></p>
     {% endif %}
+	</div>
  
   </header>
 	<div class="main">
