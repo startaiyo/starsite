@@ -6,6 +6,9 @@ class WorkModelForm(forms.ModelForm):
     class Meta:
         model=Work
         exclude=['create_user']
+        widgets = { 
+            'content':forms.Textarea(attrs={'rows':4,'cols':30}),
+        }
 
 class UserCreationForm(UserCreationForm):
     email=forms.EmailField(required=True)

@@ -32,7 +32,7 @@
             <p>本日の習慣</p>
         
                 {% for wk in work %}
-                    {% if item.0 == wk.day %}
+                    {% if item.1 == wk.day %}
                     <p>{{wk.content}}</p>
                     {% elif item.0 == wk.date %}
                     <p>{{wk.content}}</p>

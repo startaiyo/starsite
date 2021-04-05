@@ -2,6 +2,7 @@
 {% block title %}{{ block.super }} alert{% endblock %}
 {% block content %}
 <a href="{% url 'register' %}">登録する</a>
+<a href="{% url 'index' %}">戻る</a>
 <div class ="works">
   <table>
   {% if work == None %}
