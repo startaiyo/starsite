@@ -7,3 +7,4 @@
 ・予定カレンダー表示
 ・ToDoリスト
 (いずれ実装したい）・スーパーのチラシから価格を認識し、表に一覧表示してくれる機能
+https://bohlapp.herokuapp.com/index/
