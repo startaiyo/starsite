@@ -8,7 +8,7 @@ header{
 .table-success{
     color:red;
 }
-th{
+.calendar{
     border:4px,solid;
     border-color:black;
 }

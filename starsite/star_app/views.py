@@ -21,6 +21,10 @@ class UserCreateView(CreateView):
 @login_required
 def index(request):
     work=Work.objects.filter(create_user=request.user).all()
+    if len(work)!=0:
+        work=work
+    else:
+        work=None
     today = datetime.datetime.now(timezone.utc) 
     cal = calendar.Calendar(firstweekday=0) 
     this_month_cal = cal.itermonthdays2(today.year,today.month)

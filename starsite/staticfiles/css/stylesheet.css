@@ -5,3 +5,10 @@ header{
     background-color: aqua;
     height:90px;
 }
+.table-success{
+    color:red;
+}
+th{
+    border:4px,solid;
+    border-color:black;
+}
