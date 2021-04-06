@@ -13,7 +13,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 sched = BlockingScheduler()
 import datetime
 from django.contrib.auth.models import User
-@sched.scheduled_job('interval', hours=5)
+@sched.scheduled_job('cron', hour=0)
 def scheduled_job():
     people=User.objects.all()
     for human in people:

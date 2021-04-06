@@ -4,15 +4,16 @@
 <a href="{% url 'register' %}">登録する</a>
 <a href="{% url 'index' %}">戻る</a>
 <div class ="works">
-  <table>
+  <table class ="table table-striped">
   {% if work == None %}
   <p>習慣はありません</p>
   {% else %}
-  <tr>
+  <tr class ="thead-dark">
   <th>習慣内容</th>
   <th>日にち</th>
   <th>間隔</th>
   <th>曜日</th>
+  <th></th>
   </tr>
   {% endif %}
   {% for item in work %}
