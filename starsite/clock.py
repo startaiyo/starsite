@@ -50,7 +50,7 @@ def timed_job():
             elif item.interval !=0:
                 if (datetime.date.today()-item.created_at.date()).days % item.interval==0:
                     contentlist.append(item.content)
-        print (human.email)rr
+        print (human.email)
         if len(contentlist)>0:
             message = 'おはようございます。本日は'+'・'.join(contentlist)+'予定があります。'
         else:
