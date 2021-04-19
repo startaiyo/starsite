@@ -36,7 +36,7 @@ def scheduled_job():
         recipient = [human.email]
         send_mail(subject, message, from_mail, recipient)
 
-@sched.scheduled_job('interval', seconds=10)
+@sched.scheduled_job('interval', hours=1)
 def timed_job():
     people=User.objects.all()
     for human in people:
