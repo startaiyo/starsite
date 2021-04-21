@@ -82,3 +82,6 @@ def all_delete(request):
     work=Work.objects.all()
     work.delete()
     return render(request,'star_app/deleted.html')
+
+def lunchmap(request):
+    return render(request,'star_app/lunchmap.html')

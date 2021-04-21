@@ -15,9 +15,7 @@
      <div>
 		  <a href="{% url 'index' %}"><img src="{% static "images/bohllogo1.png"%}" width=250px></a>
 		  <p><a href="{% url 'alert'%}">習慣登録</a></p>
-			<p><a href="">体重</a></p>
-			<p><a href="">昼どころ</a></p>
-			<p><a href="">カロリー計算</a></p>
+      <p><a href="{% url 'lunchplace' %}">レストランを探す</a></p>
 	{% if request.user.is_authenticated %}
     <p><a href="{% url 'logout' %}">ログアウト</a></p>
     {% endif %}
