@@ -11,6 +11,7 @@ import calendar
 from datetime import timezone
 from star_app.models import Work 
 from django.contrib.auth.models import User
+from django.conf import settings
 
 # Create your views here.
 class UserCreateView(CreateView):
@@ -84,4 +85,5 @@ def all_delete(request):
     return render(request,'star_app/deleted.html')
 
 def lunchmap(request):
-    return render(request,'star_app/lunchmap.html')
+    context={'api_key':settings.GOOGLE_MAP_API_KEY}
+    return render(request,'star_app/lunchmap.html',context)
