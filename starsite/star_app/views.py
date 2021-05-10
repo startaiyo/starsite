@@ -5,14 +5,15 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView # 追記
 from .forms import UserCreationForm  # 追記
 from django.urls import reverse_lazy
-from django.http import Http404
+from django.http import Http404, HttpResponse
 import datetime
 import calendar
 from datetime import timezone
 from star_app.models import Work 
 from django.contrib.auth.models import User
 from django.conf import settings
-
+from django.views.decorators.csrf import csrf_exempt
+import urllib.parse
 # Create your views here.
 class UserCreateView(CreateView):
     form_class = UserCreationForm
@@ -84,6 +85,20 @@ def all_delete(request):
     work.delete()
     return render(request,'star_app/deleted.html')
 
+@login_required
 def lunchmap(request):
     context={'api_key':settings.GOOGLE_MAP_API_KEY}
     return render(request,'star_app/lunchmap.html',context)
+
+@login_required
+def meals(request):
+    ui = request.user.id
+    return redirect(f'http://localhost:3000?user_id={ui}')
+
+@csrf_exempt
+def mealsregister(request, *args, **kwargs):
+    parameters=urllib.parse.urlparse(request.body)
+    print(parameters.path)
+    mealsdata=urllib.parse.parse_qs(parameters.path.decode('utf-8'))
+    print(mealsdata)
+    return HttpResponse('hoge{}'.format(request))

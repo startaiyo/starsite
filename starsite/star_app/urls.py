@@ -9,4 +9,6 @@ urlpatterns = [
     path('create/', views.UserCreateView.as_view(),name="create"),
     path('delete/<int:id>/', views.delete,name='delete'),
     path('lunchmap/', views.lunchmap,name='lunchplace'),
+    path('meals/', views.meals, name='meals'),
+    path('meals/register/', views.mealsregister, name='mealsregister')
 ]
