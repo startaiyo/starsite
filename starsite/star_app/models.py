@@ -27,3 +27,23 @@ class Work(models.Model):
         today = datetime.datetime.now(timezone.utc) 
         dt=(today-self.created_at).days
         return dt
+
+class Meal(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    user_id = models.IntegerField(null=True)
+    calcium = models.CharField(max_length=100)
+    calorie = models.CharField(max_length=100)
+    carbohydrate = models.CharField(max_length=100)
+    dietary_fiber = models.CharField(max_length=100)
+    fat = models.CharField(max_length=100)
+    food_id = models.CharField(max_length=100)
+    food_name = models.CharField(max_length=300)
+    potassium = models.CharField(max_length=100)
+    protein = models.CharField(max_length=100)
+    salt = models.CharField(max_length=100)
+    sodium = models.CharField(max_length=100)
+    vitamin_a = models.CharField(max_length=100)
+    vitamin_c = models.CharField(max_length=100)
+    vitamin_d = models.CharField(max_length=100)
+    vitamin_e = models.CharField(max_length=100)
+    vitamin_k = models.CharField(max_length=100)
