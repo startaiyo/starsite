@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from . import forms
-from star_app.models import Work
+from star_app.models import Work, Meal
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView # 追記
 from .forms import UserCreationForm  # 追記
@@ -92,13 +92,32 @@ def lunchmap(request):
 
 @login_required
 def meals(request):
+    meal=Meal.objects.filter(user_id=request.user.id).all()
+    if len(meal)!=0:
+        meal = meal
+    else:
+        meal = None
+    return render(request,'star_app/meal.html',context={'meal':meal})
+
+@login_required
+def meals_page(request):
     ui = request.user.id
     return redirect(f'http://localhost:3000?user_id={ui}')
 
 @csrf_exempt
 def mealsregister(request, *args, **kwargs):
     parameters=urllib.parse.urlparse(request.body)
-    print(parameters.path)
     mealsdata=urllib.parse.parse_qs(parameters.path.decode('utf-8'))
+    for k in mealsdata:
+        v1 = mealsdata[k][0]
+        mealsdata[k] = v1
+    v2 = int(mealsdata['user_id'])
+    mealsdata['user_id'] = v2
     print(mealsdata)
+    try:
+        meal=Meal(**mealsdata)
+        meal.save()
+        print('success!')
+    except:
+        print('failed')
     return HttpResponse('hoge{}'.format(request))
