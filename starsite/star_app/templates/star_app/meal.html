@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ block.super }} alert{% endblock %}
+{% block content %}
+<a href="{% url 'meals_page' %}">登録する</a>
+<a href="{% url 'index' %}">戻る</a>
+<div class ="meals">
+  <table class ="table table-striped">
+  {% if meal == None %}
+  <p>登録された食事データはありません</p>
+  {% else %}
+  <p>※100gあたりのデータです</p>
+  <tr class ="thead-dark">
+  <th>食事内容</th>
+  <th>カロリー(kcal)</th>
+  <th>タンパク質(g)</th>
+  <th>ビタミンA(mg)</th>
+  </tr>
+  {% endif %}
+  {% for item in meal %}
+    <tr>
+    <td>{{ item.food_name }}</td>
+    <td>{{ item.calorie }}</td>
+    <td>{{ item.protein }}</td>
+    <td>{{ item.vitamin_a }}</td>
+    </tr>
+   {% endfor %}
+ 
+  <table>
+</div>
+
+{% if work != none%}
+<a href="{% url 'all_delete' %}">全削除</a>
+{% endif %}
+
+{% endblock %}
