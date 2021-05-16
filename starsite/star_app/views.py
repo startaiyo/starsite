@@ -22,7 +22,7 @@ class UserCreateView(CreateView):
 
 @login_required
 def index(request):
-    work=Work.objects.filter(create_user=request.user).all()
+    work = Work.objects.filter(create_user=request.user).all()
     if len(work)!=0:
         work=work
     else:
@@ -37,7 +37,7 @@ def index(request):
 
 @login_required
 def alert(request):
-    work=Work.objects.filter(create_user=request.user).all()
+    work = Work.objects.filter(create_user=request.user).all()
     if len(work)!=0:
         work=work
     else:
@@ -74,14 +74,14 @@ def top(request):
 
 def delete(request,id):
     try:
-        work=Work.objects.get(id=id)
+        work = Work.objects.get(id=id)
     except Work.DoesNotExist:
         raise Http404
     work.delete()
     return redirect('alert')
 
 def all_delete(request):
-    work=Work.objects.all()
+    work = Work.objects.all()
     work.delete()
     return render(request,'star_app/deleted.html')
 
@@ -92,7 +92,7 @@ def lunchmap(request):
 
 @login_required
 def meals(request):
-    meal=Meal.objects.filter(user_id=request.user.id).all()
+    meal = Meal.objects.filter(user_id=request.user.id).all()
     if len(meal)!=0:
         meal = meal
     else:
@@ -102,7 +102,7 @@ def meals(request):
 @login_required
 def meals_page(request):
     ui = request.user.id
-    return redirect(f'http://localhost:3000?user_id={ui}')
+    return redirect(f'https://bohlapp.vercel.app/?user_id={ui}')
 
 @csrf_exempt
 def mealsregister(request, *args, **kwargs):
@@ -120,4 +120,3 @@ def mealsregister(request, *args, **kwargs):
         print('success!')
     except:
         print('failed')
-    return HttpResponse('hoge{}'.format(request))
