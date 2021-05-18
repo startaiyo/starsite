@@ -47,3 +47,4 @@ class Meal(models.Model):
     vitamin_d = models.CharField(max_length=100)
     vitamin_e = models.CharField(max_length=100)
     vitamin_k = models.CharField(max_length=100)
+    weight = models.IntegerField(validators=[MinValueValidator(0)],default=100)

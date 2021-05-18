@@ -120,3 +120,22 @@ def mealsregister(request, *args, **kwargs):
         print('success!')
     except:
         print('failed')
+
+def weight(request, id):
+    meal = Meal.objects.filter(user_id=request.user.id).all()
+    if len(meal)!=0:
+        meal = meal
+    else:
+        meal = None
+    mealinfo=Meal.objects.get(id=id)
+    w = mealinfo.weight
+    form=forms.MealModelForm()
+    if request.method=='POST':
+        form=forms.MealModelForm(request.POST,instance=mealinfo)
+        if form.is_valid():
+            mealinfo = form.save(commit=False)
+            a = round(float(mealinfo.vitamin_a))
+            mealinfo.vitamin_a = str(round(a*mealinfo.weight/w))
+            mealinfo.save()
+            return redirect('meals')
+    return render(request,'star_app/meal.html',context={'form':form,'meal':meal})

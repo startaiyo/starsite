@@ -11,5 +11,6 @@ urlpatterns = [
     path('lunchmap/', views.lunchmap,name='lunchplace'),
     path('meals/', views.meals, name='meals'),
     path('meals_page/', views.meals_page, name='meals_page'),
-    path('meals/register/', views.mealsregister, name='mealsregister')
+    path('meals/register/', views.mealsregister, name='mealsregister'),
+    path('meals/weight/<int:id>/',views.weight,name='weight'),
 ]
