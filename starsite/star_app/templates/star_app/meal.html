@@ -13,7 +13,20 @@
   <th>食事内容</th>
   <th>カロリー(kcal)</th>
   <th>タンパク質(g)</th>
-  <th>ビタミンA(mg)</th>
+  <th>脂質(g)</th>
+  <th>食物繊維(g)</th>
+  <th>炭水化物(g)</th>
+  <th>ナトリウム(mg)</th>
+  <th>カリウム(mg)</th>
+  <th>カルシウム(mg)</th>
+  <th>ビタミンA(μg)</th>
+  <th>ビタミンC(mg)</th>
+  <th>ビタミンE(mg)</th>
+  <th>ビタミンK(μg)</th>
+  <th>ビタミンD(μg)</th>
+  <th>食塩相当量(g)</th>
+  <th>摂取量(g)</th>
+  <th></th>
   </tr>
   {% endif %}
   {% for item in meal %}
@@ -21,7 +34,27 @@
     <td>{{ item.food_name }}</td>
     <td>{{ item.calorie }}</td>
     <td>{{ item.protein }}</td>
+    <td>{{ item.fat }}</td>
+    <td>{{ item.dietary_fiber }}</td>
+    <td>{{ item.carbohydrate }}</td>
+    <td>{{ item.sodium }}</td>
+    <td>{{ item.potassium }}</td>
+    <td>{{ item.calcium }}</td>
     <td>{{ item.vitamin_a }}</td>
+    <td>{{ item.vitamin_c }}</td>
+    <td>{{ item.vitamin_e }}</td>
+    <td>{{ item.vitamin_k }}</td>
+    <td>{{ item.vitamin_d }}</td>
+    <td>{{ item.salt }}</td>
+    <td>{{ item.weight }}</td>
+    <td><a href="{% url 'weight' item.id %}">重さ編集</a></td>
+    {% if form %}
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">送信</button>
+    </form>
+    {% endif %}
     </tr>
    {% endfor %}
  
