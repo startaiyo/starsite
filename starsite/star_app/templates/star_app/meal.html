@@ -27,6 +27,7 @@
   <th>食塩相当量(g)</th>
   <th>摂取量(g)</th>
   <th></th>
+  <th></th>
   </tr>
   {% endif %}
   {% for item in meal %}
@@ -47,7 +48,7 @@
     <td>{{ item.vitamin_d }}</td>
     <td>{{ item.salt }}</td>
     <td>{{ item.weight }}</td>
-    <td><a href="{% url 'weight' item.id %}">重さ編集</a></td>
+    <td><a href="{% url 'weight' item.id %}">重さ編集</a>
     {% if form %}
     <form method="POST">
       {% csrf_token %}
@@ -55,6 +56,8 @@
       <button type="submit">送信</button>
     </form>
     {% endif %}
+    </td>
+    <td><a href="{% url 'deletemeal' item.id %}">削除</a></td>
     </tr>
    {% endfor %}
  
