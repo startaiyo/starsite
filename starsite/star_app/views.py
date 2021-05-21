@@ -14,6 +14,12 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
+import io
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import base64
+from django import utils
 # Create your views here.
 class UserCreateView(CreateView):
     form_class = UserCreationForm
@@ -164,7 +170,7 @@ def weight(request, id):
             mealinfo.vitamin_k = str(round(a*mealinfo.weight/w))
             mealinfo.save()
             return redirect('meals')
-    return render(request,'star_app/meal.html',context={'form':form,'meal':meal})
+    return render(request,'star_app/meal.html',context={'form':form,'meal':meal,'mealinfo':mealinfo})
 
 def deletemeal(request,id):
     try:
@@ -173,3 +179,25 @@ def deletemeal(request,id):
         raise Http404
     meal.delete()
     return redirect('meals')
+
+def create_graph(x_list,t_list):
+ plt.cla()
+ plt.plot(t_list, x_list, label="x")
+ plt.xlabel('t')
+ plt.ylabel('x')
+
+def get_image():
+ buffer = io.BytesIO()
+ plt.savefig(buffer, format='png')
+ image_png = buffer.getvalue()
+ graph = base64.b64encode(image_png)
+ graph = graph.decode('utf-8')
+ buffer.close()
+ return graph
+
+def bweight(request):
+    x_list = [3, 6, 12, 24, 48, 96, 192, 384, 768, 153]
+    t_list = [1,2,3,4,5,6,7,8,9,10]
+    create_graph(x_list, t_list)
+    graph = get_image()
+    return render(request,'star_app/bweight.html',context={'graph':graph})
