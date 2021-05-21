@@ -1,5 +1,5 @@
 from django import forms
-from .models import Work, Meal
+from .models import Work, Meal, BodyWeight, UserInfo
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 class WorkModelForm(forms.ModelForm):
@@ -19,4 +19,9 @@ class UserCreationForm(UserCreationForm):
 class MealModelForm(forms.ModelForm):
     class Meta:
         model=Meal
+        fields=['weight']
+
+class WeightModelForm(forms.ModelForm):
+    class Meta:
+        model=BodyWeight
         fields=['weight']

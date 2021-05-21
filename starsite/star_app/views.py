@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from . import forms
-from star_app.models import Work, Meal
+from star_app.models import Work, Meal, BodyWeight, UserInfo
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView # 追記
 from .forms import UserCreationForm  # 追記
@@ -183,8 +183,8 @@ def deletemeal(request,id):
 def create_graph(x_list,t_list):
  plt.cla()
  plt.plot(t_list, x_list, label="x")
- plt.xlabel('t')
- plt.ylabel('x')
+ plt.xlabel('date')
+ plt.ylabel('weight(kg)')
 
 def get_image():
  buffer = io.BytesIO()
@@ -196,8 +196,22 @@ def get_image():
  return graph
 
 def bweight(request):
-    x_list = [3, 6, 12, 24, 48, 96, 192, 384, 768, 153]
-    t_list = [1,2,3,4,5,6,7,8,9,10]
+    form = forms.WeightModelForm()
+    if request.method=='POST':
+        form=forms.WeightModelForm(request.POST)
+        if form.is_valid():
+            post=form.save(commit=False)
+            post.user=request.user
+            post.save()
+            return redirect('bweight')
+    else:
+        form=forms.WeightModelForm()
+    bweightinfo=BodyWeight.objects.filter(user_id=request.user.id).all()
+    x_list = []
+    t_list = []
+    for item in bweightinfo:
+        t_list.append(item.created_at)
+        x_list.append(item.weight)
     create_graph(x_list, t_list)
     graph = get_image()
-    return render(request,'star_app/bweight.html',context={'graph':graph})
+    return render(request,'star_app/bweight.html',context={'graph':graph,'form':form,'bweightinfo':bweightinfo})
