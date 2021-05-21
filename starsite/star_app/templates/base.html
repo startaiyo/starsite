@@ -17,6 +17,7 @@
 		  <p><a href="{% url 'alert'%}">習慣登録</a></p>
       <p><a href="{% url 'lunchplace' %}">レストランを探す</a></p>
       <p><a href="{% url 'meals' %}">食事登録</a></p>
+      <p><a href="{% url 'bweight' %}">体重記録</a></p>
 	{% if request.user.is_authenticated %}
     <p><a href="{% url 'logout' %}">ログアウト</a></p>
     {% endif %}

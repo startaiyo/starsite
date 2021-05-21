@@ -14,4 +14,5 @@ urlpatterns = [
     path('meals/register/', views.mealsregister, name='mealsregister'),
     path('meals/weight/<int:id>/',views.weight,name='weight'),
     path('meals/delete/<int:id>/',views.deletemeal,name='deletemeal'),
+    path('bweight/',views.bweight,name='bweight'),
 ]

@@ -48,3 +48,13 @@ class Meal(models.Model):
     vitamin_e = models.CharField(max_length=100)
     vitamin_k = models.CharField(max_length=100)
     weight = models.IntegerField(validators=[MinValueValidator(0)],default=100)
+
+class UserInfo(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    age = models.IntegerField(validators=[MinValueValidator(0)],default=100)
+    gender = models.CharField(max_length=20)
+
+class BodyWeight(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    weight = models.IntegerField(validators=[MinValueValidator(0)])
+    created_at = models.DateTimeField(auto_now_add=True)

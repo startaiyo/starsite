@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}{{ block.super }} alert{% endblock %}
+{% block content %}
+<p>体重をグラフ表示します。</p>
+<img src="data:image/png;base64, {{ graph | safe }} " alt="">
+{% endblock %}

@@ -49,7 +49,7 @@
     <td>{{ item.salt }}</td>
     <td>{{ item.weight }}</td>
     <td><a href="{% url 'weight' item.id %}">重さ編集</a>
-    {% if form %}
+    {% if form and item.id == mealinfo.id %}
     <form method="POST">
       {% csrf_token %}
       {{ form.as_p }}
