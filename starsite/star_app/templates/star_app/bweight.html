@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% block title %}{{ block.super }} alert{% endblock %}
 {% block content %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+<button type="submit">送信</button>
+</form>
+{% for item in bweightinfo %}
+    <p>{{ item.created_at }} : {{ item.weight }}kg</p>
+{% endfor %}
 <p>体重をグラフ表示します。</p>
 <img src="data:image/png;base64, {{ graph | safe }} " alt="">
 {% endblock %}
