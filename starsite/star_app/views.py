@@ -103,13 +103,7 @@ def meals(request):
     meal = Meal.objects.filter(user_id=request.user.id).all()
     userinfo = UserInfo.objects.get(user_id=request.user.id)
     mealinfo = meal[0]
-    mealdata = [{
-            'label': "Aさん",
-            'data': [65, 76, 87, 75, 90]
-        },{
-            'label': "Bさん",
-            'data': [61, 71, 81, 75, 90]
-        },idealnut[0]]
+    mealdata = [idealnut[0]]
     GENDER = (
         ('man','男性'),
         ('woman','女性'),
