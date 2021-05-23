@@ -50,9 +50,14 @@ class Meal(models.Model):
     weight = models.IntegerField(validators=[MinValueValidator(0)],default=100)
 
 class UserInfo(models.Model):
+    GENDER = (
+        ('man','男性'),
+        ('woman','女性'),
+        ('other','その他')
+        )
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    age = models.IntegerField(validators=[MinValueValidator(0)],default=100)
-    gender = models.CharField(max_length=20)
+    age = models.IntegerField('年齢',validators=[MinValueValidator(0)])
+    gender = models.CharField('性別',choices=GENDER,max_length=20)
 
 class BodyWeight(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)

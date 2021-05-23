@@ -25,3 +25,8 @@ class WeightModelForm(forms.ModelForm):
     class Meta:
         model=BodyWeight
         fields=['weight']
+
+class UserInfoModelForm(forms.ModelForm):
+    class Meta:
+        model=UserInfo
+        fields=('age','gender')
