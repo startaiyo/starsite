@@ -20,6 +20,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import base64
 from django import utils
+import json
+from .idealnutrition import idealnut
 # Create your views here.
 class UserCreateView(CreateView):
     form_class = UserCreationForm
@@ -99,11 +101,25 @@ def lunchmap(request):
 @login_required
 def meals(request):
     meal = Meal.objects.filter(user_id=request.user.id).all()
+    userinfo = UserInfo.objects.get(user_id=request.user.id)
+    mealinfo = meal[0]
+    mealdata = [{
+            'label': "Aさん",
+            'data': [65, 76, 87, 75, 90]
+        },{
+            'label': "Bさん",
+            'data': [61, 71, 81, 75, 90]
+        },idealnut[0]]
+    GENDER = (
+        ('man','男性'),
+        ('woman','女性'),
+        ('other','その他')
+    )
     if len(meal)!=0:
         meal = meal
     else:
         meal = None
-    return render(request,'star_app/meal.html',context={'meal':meal})
+    return render(request,'star_app/meal.html',context={'meal':meal,'userinfo':userinfo,'mealdata':json.dumps(mealdata)})
 
 @login_required
 def meals_page(request):
@@ -215,3 +231,16 @@ def bweight(request):
     create_graph(x_list, t_list)
     graph = get_image()
     return render(request,'star_app/bweight.html',context={'graph':graph,'form':form,'bweightinfo':bweightinfo})
+
+def userinfo(request):
+    form=forms.UserInfoModelForm()
+    if request.method=='POST':
+        form=forms.UserInfoModelForm(request.POST)
+        if form.is_valid():
+            post=form.save(commit=False)
+            post.user=request.user
+            post.save()
+            return redirect('meals')
+    else:
+        form=forms.UserInfoModelForm()
+    return render(request,'star_app/user_info.html',context={'form':form})

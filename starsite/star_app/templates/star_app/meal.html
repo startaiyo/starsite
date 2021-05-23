@@ -3,6 +3,7 @@
 {% block content %}
 <a href="{% url 'meals_page' %}">登録する</a>
 <a href="{% url 'index' %}">戻る</a>
+<h4>{{ userinfo.age }}歳{{ userinfo.get_gender_display }}の場合</h4>
 <div class ="meals">
   <table class ="table table-striped">
   {% if meal == None %}
@@ -16,7 +17,7 @@
   <th>脂質(g)</th>
   <th>食物繊維(g)</th>
   <th>炭水化物(g)</th>
-  <th>ナトリウム(mg)</th>
+  <th>食塩相当量(ナトリウム)(g)</th>
   <th>カリウム(mg)</th>
   <th>カルシウム(mg)</th>
   <th>ビタミンA(μg)</th>
@@ -24,7 +25,6 @@
   <th>ビタミンE(mg)</th>
   <th>ビタミンK(μg)</th>
   <th>ビタミンD(μg)</th>
-  <th>食塩相当量(g)</th>
   <th>摂取量(g)</th>
   <th></th>
   <th></th>
@@ -38,7 +38,7 @@
     <td>{{ item.fat }}</td>
     <td>{{ item.dietary_fiber }}</td>
     <td>{{ item.carbohydrate }}</td>
-    <td>{{ item.sodium }}</td>
+    <td>{{ item.salt }}</td>
     <td>{{ item.potassium }}</td>
     <td>{{ item.calcium }}</td>
     <td>{{ item.vitamin_a }}</td>
@@ -46,7 +46,7 @@
     <td>{{ item.vitamin_e }}</td>
     <td>{{ item.vitamin_k }}</td>
     <td>{{ item.vitamin_d }}</td>
-    <td>{{ item.salt }}</td>
+    
     <td>{{ item.weight }}</td>
     <td><a href="{% url 'weight' item.id %}">重さ編集</a>
     {% if form and item.id == mealinfo.id %}
@@ -63,9 +63,32 @@
  
   <table>
 </div>
+<a href="{% url 'userinfo' %}">年齢、性別登録</a>
+<canvas id="radar-chart" height="70px"></canvas>
+<script type="text/javascript">
 
-{% if work != none%}
-<a href="{% url 'all_delete' %}">全削除</a>
-{% endif %}
-
+/* idが"radar-chart"の要素を取得 */
+var ctx = document.getElementById("radar-chart");
+const mealdata = JSON.parse('{{ mealdata|safe }}');
+/* 上記要素にチャートを描画*/
+var myRadarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+        labels: [
+        'タンパク質(g)',
+        '脂質(g)',
+        '食物繊維(g)',
+        '炭水化物(g)',
+        '食塩相当量(g)',
+        'カリウム(mg)',
+        'カルシウム(mg)',
+        'ビタミンA(μg)',
+        'ビタミンC(mg)',
+        'ビタミンE(mg)',
+        'ビタミンK(μg)',
+        'ビタミンD(μg)',
+        ],
+        datasets: mealdata},
+});
+</script>
 {% endblock %}
