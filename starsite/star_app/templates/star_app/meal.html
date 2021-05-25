@@ -89,6 +89,15 @@ var myRadarChart = new Chart(ctx, {
         'ビタミンD(μg)',
         ],
         datasets: mealdata},
+    options: {
+    scale: {
+      ticks: {
+        stepSize: 1, // 目盛の間隔
+        beginAtZero: true
+      }
+    }
+  }
+      
 });
 </script>
 {% endblock %}
