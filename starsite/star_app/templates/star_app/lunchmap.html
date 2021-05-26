@@ -130,13 +130,14 @@ function startNearbySearch(latLng){
     }
   );
   
-  //PlacesServiceインスタンス生成
+  //PlacesServiceインスタンス生成。検索場所に関する詳細な情報がわかる。
   var service = new google.maps.places.PlacesService(map);
   
   //入力したKeywordを取得
   var keywordInput = document.getElementById("keywordInput").value;
   //入力した検索範囲を取得
   var obj = document.getElementById("radiusInput");
+  //円の範囲を指定
   var radiusInput = Number(obj.options[obj.selectedIndex].value);
   
   //周辺検索
@@ -148,6 +149,7 @@ function startNearbySearch(latLng){
       keyword: keywordInput,
       language: 'ja'
     },
+    //次の関数を呼ぶ
     displayResults
   );
   
@@ -177,10 +179,9 @@ function startNearbySearch(latLng){
 function displayResults(results, status, pagination) {
   
   if(status == google.maps.places.PlacesServiceStatus.OK) {
-  
     //検索結果をplacesList配列に連結
     placesList = placesList.concat(results);
-    
+    console.log(placesList)
     //pagination.hasNextPage==trueの場合、
     //続きの検索結果あり
     if (pagination.hasNextPage) {
@@ -196,7 +197,7 @@ function displayResults(results, status, pagination) {
     } else {
       
       //ソートを正しく行うため、
-      //ratingが設定されていないものを
+      //評価(rating)が設定されていないものを
       //一旦「-1」に変更する。
       for (var i = 0; i < placesList.length; i++) {
         if(placesList[i].rating == undefined){
@@ -206,6 +207,7 @@ function displayResults(results, status, pagination) {
       
       //ratingの降順でソート（連想配列ソート）
       placesList.sort(function(a,b){
+        //返り値が負の時はbをaの後ろへ、正の時はaをbの後ろへ、0の時は何もしない。
         if(a.rating > b.rating) return -1;
         if(a.rating < b.rating) return 1;
         return 0;
@@ -224,8 +226,6 @@ function displayResults(results, status, pagination) {
         
         //表示内容（評価＋名称）
         var content = "【" + rating + "】 " + place.name;
-        
-        //クリック時にMapにマーカー表示するようにAタグを作成
         resultHTML += "<li>";
         resultHTML += "<a href=\"javascript: void(0);\"";
         resultHTML += " onclick=\"createMarker(";
@@ -239,6 +239,8 @@ function displayResults(results, status, pagination) {
       }
       
       resultHTML += "</ol>";
+              
+      //クリック時にMapにマーカー表示するようにAタグを作成
       
       //結果表示
       document.getElementById("results").innerHTML = resultHTML;
@@ -246,21 +248,7 @@ function displayResults(results, status, pagination) {
   
   } else {
     //エラー表示
-    var results = document.getElementById("results");
-    if(status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-      results.innerHTML = "検索結果が0件です。";
-    } else if(status == google.maps.places.PlacesServiceStatus.ERROR) {
-      results.innerHTML = "サーバ接続に失敗しました。";
-    } else if(status == google.maps.places.PlacesServiceStatus.INVALID_REQUEST) {
-      results.innerHTML = "リクエストが無効でした。";
-    } else if(status == google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
-      results.innerHTML = "リクエストの利用制限回数を超えました。";
-    } else if(status == google.maps.places.PlacesServiceStatus.REQUEST_DENIED) {
-      results.innerHTML = "サービスが使えない状態でした。";
-    } else if(status == google.maps.places.PlacesServiceStatus.UNKNOWN_ERROR) {
-      results.innerHTML = "原因不明のエラーが発生しました。";
-    }
-
+    results.innerHTML = "エラー発生";
   }
 }
 
@@ -289,11 +277,10 @@ function createMarker(name, vicinity, lat, lng){
   //情報窓の設定
   var info = "<div style=\"min-width: 100px\">";
   info += name + "<br />";
+  //住所
   info += vicinity + "<br />";
   info += "<a href=\"https://maps.google.co.jp/maps?q=" + encodeURIComponent(name + " " + vicinity) + "&z=15&iwloc=A\"";
   info += " target=\"_blank\">⇒詳細表示</a><br />";
-  info += "<a href=\"https://www.google.com/maps/dir/?api=1&destination=" + lat + "," + lng + "\"";
-  info += " target=\"_blank\">⇒ここへ行く</a>";
   info += "</div>";
   
   //情報窓の表示
