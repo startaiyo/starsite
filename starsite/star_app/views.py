@@ -101,27 +101,45 @@ def lunchmap(request):
 @login_required
 def meals(request):
     meal = Meal.objects.filter(user_id=request.user.id).all()
-    userinfo = UserInfo.objects.get(user_id=request.user.id)
-    mealdata = [idealnut[0]]
+    try:
+        userinfo = UserInfo.objects.get(user_id=request.user.id)
+    except:
+        userinfo = None
+    mealdata = []
+    if userinfo:
+        if userinfo.gender == "man":
+            if userinfo.age <= 29:
+                mealdata.append(idealnut[0])
+            elif userinfo.age >= 30 and userinfo.age <= 49:
+                mealdata.append(idealnut[1])
+            elif userinfo.age >= 50:
+                mealdata.append(idealnut[2])
+        elif userinfo.gender == "woman":
+            if userinfo.age <= 29:
+                mealdata.append(idealnut[3])
+            elif userinfo.age >= 30 and userinfo.age <= 49:
+                mealdata.append(idealnut[4])
+            elif userinfo.age >= 50:
+                mealdata.append(idealnut[5])
+    
     today = datetime.datetime.now(timezone.utc)
     start_time = today - datetime.timedelta(days=7)
     meal=meal.filter(created_at__range=(start_time,today))
-    print(meal)
     week_protein,week_fat,week_dietary_fiber,week_carbohydrate,week_salt,week_potassium,week_calcium,week_vitamin_a,week_vitamin_c,week_vitamin_e,week_vitamin_k,week_vitamin_d=[],[],[],[],[],[],[],[],[],[],[],[]
     for item in meal:
-        week_protein.append(int(item.protein)/10)
-        week_fat.append(int(item.fat)/10)
-        week_dietary_fiber.append(int(item.dietary_fiber)/3)
-        week_carbohydrate.append(int(item.carbohydrate)/100)
-        week_salt.append(int(item.salt))
-        week_potassium.append(int(item.potassium)/500) 
-        week_calcium.append(int(item.calcium)/100)
-        week_vitamin_a.append(int(item.vitamin_a)/300)
-        week_vitamin_c.append(int(item.vitamin_c)/10)
-        week_vitamin_e.append(int(item.vitamin_e))
-        week_vitamin_k.append(int(item.vitamin_k)/30)
-        week_vitamin_d.append(int(item.vitamin_d))
-        print("一周")
+        week_protein.append(float(item.protein)/10)
+        week_fat.append(float(item.fat)/10)
+        week_dietary_fiber.append(float(item.dietary_fiber)/3)
+        week_carbohydrate.append(float(item.carbohydrate)/100)
+        week_salt.append(float(item.salt))
+        week_potassium.append(float(item.potassium)/500) 
+        week_calcium.append(float(item.calcium)/100)
+        week_vitamin_a.append(float(item.vitamin_a)/300)
+        week_vitamin_c.append(float(item.vitamin_c)/10)
+        week_vitamin_e.append(float(item.vitamin_e))
+        week_vitamin_k.append(float(item.vitamin_k)/30)
+        week_vitamin_d.append(float(item.vitamin_d))
+
  
 
     weekdata = {
@@ -129,7 +147,6 @@ def meals(request):
         'data':[round(sum(week_protein),1),round(sum(week_fat),1),round(sum(week_dietary_fiber),1),round(sum(week_carbohydrate),1),round(sum(week_salt),1),round(sum(week_potassium),1),round(sum(week_calcium),1),round(sum(week_vitamin_a),1),round(sum(week_vitamin_c),1),round(sum(week_vitamin_e),1),round(sum(week_vitamin_k),1),round(sum(week_vitamin_d),1)]
     }
     mealdata.append(weekdata)
-    print(mealdata)
     GENDER = (
         ('man','男性'),
         ('woman','女性'),
