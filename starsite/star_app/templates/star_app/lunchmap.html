@@ -29,11 +29,11 @@
 </table>
 <button onclick="getMyPlace();">現在地</button>
 <div id="result"></div>
-<div id="mapArea" style="width:100%; height:300px;"></div>
+<div id="mapArea" style="width:100%; height:430px;"></div>
 ★結果★<br />
 <div id="results" style="width: 100%; height: 200px; border: 1px dotted; padding: 10px; overflow-y: scroll; background: white;"></div>
 
-  
+{% comment %} mapを非同期で取得し、DOM構築が完了し次第すぐにcallback実行。 {% endcomment %}
 <script src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&libraries=places&callback=initMap" async defer></script>
 <script type="text/javascript">
 var placesList;
@@ -44,8 +44,7 @@ var placesList;
 function initMap() {
   new google.maps.Map(document.getElementById("mapArea"), {
     zoom: 5,
-    center: new google.maps.LatLng(36,138),
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+    center: new google.maps.LatLng(38.5,135)
   });
 }
 
@@ -84,19 +83,18 @@ function getMyPlace() {
  お店情報取得
 */
 function getPlaces(){
-  
   //結果表示クリア
   document.getElementById("results").innerHTML = "";
   //placesList配列を初期化
   placesList = new Array();
   
-  //入力した検索場所を取得
+  //入力した検索場所を取得(addressInputに検索場所を格納)
   var addressInput = document.getElementById("addressInput").value;
   if (addressInput == "") {
     return;
   }
   
-  //検索場所の位置情報を取得
+  //検索場所の位置情報を緯度経度で取得
   var geocoder = new google.maps.Geocoder();
   geocoder.geocode(
     {
@@ -104,7 +102,7 @@ function getPlaces(){
     },
     function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-        //取得した緯度・経度を使って周辺検索
+        //resultsには緯度経度が格納されている。取得した緯度・経度を使って周辺検索。
         startNearbySearch(results[0].geometry.location);
       }
       else {
@@ -311,4 +309,4 @@ function createMarker(name, vicinity, lat, lng){
 }
 </script>
 {% endblock %}
- {% comment %} https://www.delta-ss.com/labo/a015.html  {% endcomment %}
+ {% comment %} 引用元: https://www.delta-ss.com/labo/a015.html  {% endcomment %}

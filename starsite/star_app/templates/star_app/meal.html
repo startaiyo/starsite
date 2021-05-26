@@ -3,7 +3,9 @@
 {% block content %}
 <a href="{% url 'meals_page' %}">登録する</a>
 <a href="{% url 'index' %}">戻る</a>
+{% if userinfo %}
 <h4>{{ userinfo.age }}歳{{ userinfo.get_gender_display }}の場合</h4>
+{% endif %}
 <div class ="meals">
   <table class ="table table-striped">
   {% if meal == None %}
