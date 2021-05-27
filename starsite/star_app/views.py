@@ -234,19 +234,22 @@ def deletemeal(request,id):
     return redirect('meals')
 
 def create_graph(x_list,t_list):
- plt.cla()
- plt.plot(t_list, x_list, label="x")
- plt.xlabel('date')
- plt.ylabel('weight(kg)')
+#  グラフの初期化
+    plt.cla()
+    plt.plot(t_list, x_list, label="x")
+    plt.xlabel('date')
+    plt.ylabel('weight(kg)')
 
 def get_image():
- buffer = io.BytesIO()
- plt.savefig(buffer, format='png')
- image_png = buffer.getvalue()
- graph = base64.b64encode(image_png)
- graph = graph.decode('utf-8')
- buffer.close()
- return graph
+#  バイナリデータをメモリ上に書き出す
+    buffer = io.BytesIO()
+#  上記のpltをpng形式にして保存
+    plt.savefig(buffer, format='png')
+    image_png = buffer.getvalue()
+    graph = base64.b64encode(image_png)
+    graph = graph.decode('utf-8')
+    buffer.close()
+    return graph
 
 def bweight(request):
     form = forms.WeightModelForm()
