@@ -16,12 +16,14 @@ from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
 import io
 import matplotlib
+# バックエンドにAggを指定
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import base64
 from django import utils
 import json
 from .idealnutrition import idealnut
+import copy
 # Create your views here.
 class UserCreateView(CreateView):
     form_class = UserCreationForm
@@ -101,62 +103,75 @@ def lunchmap(request):
 @login_required
 def meals(request):
     meal = Meal.objects.filter(user_id=request.user.id).all()
+    if len(meal)!=0:
+        meal = meal
+    else:
+        meal = None
     try:
         userinfo = UserInfo.objects.get(user_id=request.user.id)
     except:
         userinfo = None
     mealdata = []
-    if userinfo:
-        if userinfo.gender == "man":
-            if userinfo.age <= 29:
-                mealdata.append(idealnut[0])
-            elif userinfo.age >= 30 and userinfo.age <= 49:
-                mealdata.append(idealnut[1])
-            elif userinfo.age >= 50:
-                mealdata.append(idealnut[2])
-        elif userinfo.gender == "woman":
-            if userinfo.age <= 29:
-                mealdata.append(idealnut[3])
-            elif userinfo.age >= 30 and userinfo.age <= 49:
-                mealdata.append(idealnut[4])
-            elif userinfo.age >= 50:
-                mealdata.append(idealnut[5])
-    
+    mealdata2 = []
+    # 理想的栄養素をdays日分乗じる
+    def ideal(i,ds,md):
+        ideal = idealnut[i].copy()
+        ideal['data'] = [n*ds for n in idealnut[i]['data']]
+        md.append(ideal)
+
+    def get_user_data(ui,md,days):
+        if ui:
+            if ui.gender == "man":
+                if ui.age <= 29:
+                    ideal(0,days,md)
+                elif ui.age >= 30 and ui.age <= 49:
+                    ideal(1,days,md)
+                elif ui.age >= 50:
+                    ideal(2,days,md)
+            elif ui.gender == "woman":
+                if ui.age <= 29:
+                    ideal(3,days,md)
+                elif ui.age >= 30 and ui.age <= 49:
+                    ideal(4,days,md)
+                elif ui.age >= 50:
+                    ideal(5,days,md)
+    # レーダーチャートに理想栄養追加
+    get_user_data(userinfo,mealdata,7)
+    get_user_data(userinfo,mealdata2,1)
+
     today = datetime.datetime.now(timezone.utc)
-    start_time = today - datetime.timedelta(days=7)
-    meal=meal.filter(created_at__range=(start_time,today))
-    week_protein,week_fat,week_dietary_fiber,week_carbohydrate,week_salt,week_potassium,week_calcium,week_vitamin_a,week_vitamin_c,week_vitamin_e,week_vitamin_k,week_vitamin_d=[],[],[],[],[],[],[],[],[],[],[],[]
-    for item in meal:
-        week_protein.append(float(item.protein)/10)
-        week_fat.append(float(item.fat)/10)
-        week_dietary_fiber.append(float(item.dietary_fiber)/3)
-        week_carbohydrate.append(float(item.carbohydrate)/100)
-        week_salt.append(float(item.salt))
-        week_potassium.append(float(item.potassium)/500) 
-        week_calcium.append(float(item.calcium)/100)
-        week_vitamin_a.append(float(item.vitamin_a)/300)
-        week_vitamin_c.append(float(item.vitamin_c)/10)
-        week_vitamin_e.append(float(item.vitamin_e))
-        week_vitamin_k.append(float(item.vitamin_k)/30)
-        week_vitamin_d.append(float(item.vitamin_d))
-
- 
-
-    weekdata = {
-        'label':'weekly_nutrition',
-        'data':[round(sum(week_protein),1),round(sum(week_fat),1),round(sum(week_dietary_fiber),1),round(sum(week_carbohydrate),1),round(sum(week_salt),1),round(sum(week_potassium),1),round(sum(week_calcium),1),round(sum(week_vitamin_a),1),round(sum(week_vitamin_c),1),round(sum(week_vitamin_e),1),round(sum(week_vitamin_k),1),round(sum(week_vitamin_d),1)]
-    }
-    mealdata.append(weekdata)
+    def get_data(ds, ml, md, label):
+        start_time = today - datetime.timedelta(days=ds)
+        meal=ml.filter(created_at__range=(start_time,today))
+        week_protein,week_fat,week_dietary_fiber,week_carbohydrate,week_salt,week_potassium,week_calcium,week_vitamin_a,week_vitamin_c,week_vitamin_e,week_vitamin_k,week_vitamin_d=[],[],[],[],[],[],[],[],[],[],[],[]
+        for item in meal:
+            week_protein.append(float(item.protein)/10)
+            week_fat.append(float(item.fat)/10)
+            week_dietary_fiber.append(float(item.dietary_fiber)/3)
+            week_carbohydrate.append(float(item.carbohydrate)/100)
+            week_salt.append(float(item.salt))
+            week_potassium.append(float(item.potassium)/500) 
+            week_calcium.append(float(item.calcium)/100)
+            week_vitamin_a.append(float(item.vitamin_a)/300)
+            week_vitamin_c.append(float(item.vitamin_c)/10)
+            week_vitamin_e.append(float(item.vitamin_e))
+            week_vitamin_k.append(float(item.vitamin_k)/30)
+            week_vitamin_d.append(float(item.vitamin_d))
+        
+        weekdata = {
+            'label':label,
+            'data':[round(sum(week_protein),1),round(sum(week_fat),1),round(sum(week_dietary_fiber),1),round(sum(week_carbohydrate),1),round(sum(week_salt),1),round(sum(week_potassium),1),round(sum(week_calcium),1),round(sum(week_vitamin_a),1),round(sum(week_vitamin_c),1),round(sum(week_vitamin_e),1),round(sum(week_vitamin_k),1),round(sum(week_vitamin_d),1)]
+        }
+        md.append(weekdata)
+    # レーダーチャートに実データ追加
+    get_data(7, meal, mealdata, 'weekly_data')
+    get_data(1, meal, mealdata2, 'daily_data')
     GENDER = (
         ('man','男性'),
         ('woman','女性'),
         ('other','その他')
     )
-    if len(meal)!=0:
-        meal = meal
-    else:
-        meal = None
-    return render(request,'star_app/meal.html',context={'meal':meal,'userinfo':userinfo,'mealdata':json.dumps(mealdata)})
+    return render(request,'star_app/meal.html',context={'meal':meal,'userinfo':userinfo,'mealdata':json.dumps(mealdata),'mealdata2':json.dumps(mealdata2)})
 
 @login_required
 def meals_page(request):
@@ -191,6 +206,7 @@ def weight(request, id):
     form=forms.MealModelForm()
     if request.method=='POST':
         form=forms.MealModelForm(request.POST,instance=mealinfo)
+        # g数に応じて各栄養素量変化
         if form.is_valid():
             mealinfo = form.save(commit=False)
             a = round(float(mealinfo.calcium))
