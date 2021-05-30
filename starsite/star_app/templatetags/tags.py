@@ -6,8 +6,7 @@ register=template.Library()
 
 @register.filter
 def delta(num,dt):
-    td = datetime.datetime.now(timezone.utc).day
-    delta = num - td - dt
+    delta = (num - dt.date()).days
     return delta
     
 @register.filter

@@ -27,7 +27,7 @@
   </td>
 </tr>
 </table>
-<button onclick="getMyPlace();">現在地</button>
+{% comment %} <button onclick="getMyPlace();">現在地</button> {% endcomment %}
 <div id="result"></div>
 <div id="mapArea" style="width:100%; height:430px;"></div>
 ★結果★<br />
@@ -48,37 +48,7 @@ function initMap() {
   });
 }
 
-function getMyPlace() {
-  var output = document.getElementById("result");
-  if (!navigator.geolocation){//Geolocation apiがサポートされていない場合
-    output.innerHTML = "<p>Geolocationはあなたのブラウザーでサポートされておりません</p>";
-    return;
-  }
-  function success(position) {
-    var latitude  = position.coords.latitude;//緯度
-    var longitude = position.coords.longitude;//経度
-    // 位置情報
-    var latlng = new google.maps.LatLng( latitude , longitude ) ;
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode(
-    {
-      location: latlng
-    },
-    function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        //取得した緯度・経度を使って周辺検索
-        startNearbySearch(results[0].geometry.location);
-      }
-      else {
-        alert("位置情報が取得できませんでした。");
-      }
-    });
-  function error() {
-    //エラーの場合
-    output.innerHTML = "座標位置を取得できません";
-  };
-  navigator.geolocation.getCurrentPosition(success, error);//成功と失敗を判断
-}}
+
 /*
  お店情報取得
 */
