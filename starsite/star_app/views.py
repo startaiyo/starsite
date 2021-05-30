@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.http import Http404, HttpResponse
 import datetime
 import calendar
-from datetime import timezone
+from datetime import timezone, timedelta
 from star_app.models import Work 
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -38,12 +38,15 @@ def index(request):
     else:
         work=None
     today = datetime.datetime.now(timezone.utc) 
-    cal = calendar.Calendar(firstweekday=0) 
-    this_month_cal = cal.itermonthdays2(today.year,today.month)
     this_month = today.month
     this_year = today.year
     this_day = today.day
-    return render(request,'star_app/index.html',context={'work':work,'this_day':this_day,'this_year':this_year,'this_month':this_month, 'this_month_cal':this_month_cal})
+    month_first_day = datetime.date(this_year,this_month,1)
+    cal = [month_first_day + timedelta(days=-c-1) for c in range(month_first_day.weekday())]
+    cal.reverse()
+    this_month_cal = [datetime.date(this_year,this_month,1) + timedelta(days=c) for c in range(calendar.monthrange(this_year,this_month)[1])]
+    cal.extend(this_month_cal)
+    return render(request,'star_app/index.html',context={'work':work,'this_day':this_day,'this_year':this_year,'this_month':this_month, 'cal':cal})
 
 @login_required
 def alert(request):
