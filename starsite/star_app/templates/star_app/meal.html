@@ -67,6 +67,7 @@
 </div>
 <a href="{% url 'userinfo' %}">年齢、性別登録</a>
 <canvas id="radar-chart" height="70px"></canvas>
+<canvas id="radar-chart2" height="70px"></canvas>
 <script type="text/javascript">
 
 /* idが"radar-chart"の要素を取得 */
@@ -91,6 +92,37 @@ var myRadarChart = new Chart(ctx, {
         'ビタミンD(μg)',
         ],
         datasets: mealdata},
+    options: {
+    scale: {
+      ticks: {
+        stepSize: 1, // 目盛の間隔
+        beginAtZero: true
+      }
+    }
+  }
+      
+});
+var ctx2 = document.getElementById("radar-chart2");
+const mealdata2 = JSON.parse('{{ mealdata2|safe }}');
+/* 一日単位のデータ */
+var myRadarChart2 = new Chart(ctx2, {
+    type: 'radar',
+    data: {
+        labels: [
+        'タンパク質(x10g)',
+        '脂質(x10g)',
+        '食物繊維(x3g)',
+        '炭水化物(x100g)',
+        '食塩相当量(g)',
+        'カリウム(x500mg)',
+        'カルシウム(x100mg)',
+        'ビタミンA(x300μg)',
+        'ビタミンC(x10mg)',
+        'ビタミンE(mg)',
+        'ビタミンK(x30μg)',
+        'ビタミンD(μg)',
+        ],
+        datasets: mealdata2},
     options: {
     scale: {
       ticks: {
