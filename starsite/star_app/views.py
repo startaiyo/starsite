@@ -119,7 +119,10 @@ def meals(request):
     # 理想的栄養素をdays日分乗じる
     def ideal(i,ds,md):
         ideal = idealnut[i].copy()
+        ideal['label'] = 'ideal'
         ideal['data'] = [n*ds for n in idealnut[i]['data']]
+        ideal['backgroundColor'] = 'rgba(255,0,0,0.4)'
+        ideal['borderColor'] = 'red'
         md.append(ideal)
 
     def get_user_data(ui,md,days):
@@ -163,7 +166,9 @@ def meals(request):
         
         weekdata = {
             'label':label,
-            'data':[round(sum(week_protein),1),round(sum(week_fat),1),round(sum(week_dietary_fiber),1),round(sum(week_carbohydrate),1),round(sum(week_salt),1),round(sum(week_potassium),1),round(sum(week_calcium),1),round(sum(week_vitamin_a),1),round(sum(week_vitamin_c),1),round(sum(week_vitamin_e),1),round(sum(week_vitamin_k),1),round(sum(week_vitamin_d),1)]
+            'data':[round(sum(week_protein),1),round(sum(week_fat),1),round(sum(week_dietary_fiber),1),round(sum(week_carbohydrate),1),round(sum(week_salt),1),round(sum(week_potassium),1),round(sum(week_calcium),1),round(sum(week_vitamin_a),1),round(sum(week_vitamin_c),1),round(sum(week_vitamin_e),1),round(sum(week_vitamin_k),1),round(sum(week_vitamin_d),1)],
+            'backgroundColor':'rgba(0,0,255,0.4)',
+            'borderColor':'blue',
         }
         md.append(weekdata)
     # レーダーチャートに実データ追加
