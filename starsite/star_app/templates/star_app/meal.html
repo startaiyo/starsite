@@ -1,6 +1,17 @@
 {% extends "base.html" %}
 {% block title %}{{ block.super }} alert{% endblock %}
 {% block content %}
+<style>
+.rctitle{
+  width:50%;
+  float:left;
+  padding-left:180px;
+}
+.rchart{
+  width:50%;
+  display:inline-block;
+}
+</style>
 <a href="{% url 'meals_page' %}">登録する</a>
 <a href="{% url 'index' %}">戻る</a>
 {% if userinfo %}
@@ -65,12 +76,15 @@
  
   <table>
 </div>
+<h3 class = "rctitle">１週間分の食事バランス</h3>
+<h3 class = "rctitle">１日分の食事バランス</h3>
+<div class = "rchart">
+<canvas id="radar-chart" width="300" height="300"></canvas>
+</div>
+<div class = "rchart">
+<canvas id="radar-chart2" width="300" height="300"></canvas>
+</div>
 <a href="{% url 'userinfo' %}">年齢、性別登録</a>
-
-<canvas id="radar-chart" height="70px"></canvas>
-
-
-<canvas id="radar-chart2" height="70px"></canvas>
 <script type="text/javascript">
 
 /* idが"radar-chart"の要素を取得 */
@@ -101,8 +115,9 @@ var myRadarChart = new Chart(ctx, {
         stepSize: 1, // 目盛の間隔
         beginAtZero: true
       }
+    },
+    maintainAspectRatio:false
     }
-  }
       
 });
 var ctx2 = document.getElementById("radar-chart2");
@@ -132,8 +147,9 @@ var myRadarChart2 = new Chart(ctx2, {
         stepSize: 1, // 目盛の間隔
         beginAtZero: true
       }
+    },
+    maintainAspectRatio:false
     }
-  }
       
 });
 </script>
