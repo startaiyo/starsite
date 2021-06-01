@@ -274,7 +274,8 @@ def get_image():
     graph = graph.decode('utf-8')
     buffer.close()
     return graph
-
+    
+@login_required
 def bweight(request):
     form = forms.WeightModelForm()
     if request.method=='POST':
